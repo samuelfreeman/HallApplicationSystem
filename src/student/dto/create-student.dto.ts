@@ -20,11 +20,7 @@ export class CreateStudentDto {
   @IsStrongPassword()
   password: string;
   @IsString()
-  gender: string;
-
-  
-  
-  
+  gender: string;  
   @Transform(({ value }) => parseInt(value, 10))
   level: number;
   @IsPhoneNumber('GH')

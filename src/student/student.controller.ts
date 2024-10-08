@@ -48,7 +48,7 @@ export class StudentController {
     @Body(ValidationPipe) createStudentDto: CreateStudentDto
   ) {
     console.log(file.path)
-    // Ensure the file is present before trying to upload
+    // Ensure the file  present before trying to upload
     if (!file) {
       throw new BadRequestException('Missing required file: profile');
     }
@@ -73,10 +73,13 @@ export class StudentController {
 
 
   @Get("register")
-  @Render('signUp')
+  @Render('signUp') // renders thhe signUp page
   renderRegister() {
-    return { title: "Register" };
+    return { title: "Registration Page" };
   }
+
+
+
 
   @Post('forgot-password')
   forgotPassword(@Body(ValidationPipe) checkForgotPassword: ForgotPassword) {
