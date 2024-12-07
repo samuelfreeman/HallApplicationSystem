@@ -59,6 +59,6 @@ export class AppService {
       ]
     }
     const title = 'Home'
-    return { cast, title };
+    return {  title };
   }
 }

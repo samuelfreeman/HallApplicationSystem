@@ -93,3 +93,5 @@ But they must be an affliate of the hall first.
 i am pondering wether the hall entity is needed since its for just one hall which is autonomy
 then how will i get the number of rooms - by doing analytics on the room 
 
+
+ Must do : Use Guards to get the jwt token of a signedIn or logged in student then take that to look for his  profile
