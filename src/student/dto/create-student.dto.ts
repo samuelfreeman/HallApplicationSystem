@@ -5,13 +5,15 @@ import {
   IsStrongPassword,
   IsOptional,
   IsPhoneNumber,
-  
+  isInt,
+  IsDate,
+
 } from 'class-validator';
-import { Transform} from 'class-transformer';
+import { Transform } from 'class-transformer';
 export class CreateStudentDto {
   @IsString()
   studentId: string;
-  profile: string; // this is an image
+  profile?: string; // this is an image
   @IsString()
   fullName: string;
   @IsEmail()
@@ -20,7 +22,7 @@ export class CreateStudentDto {
   @IsStrongPassword()
   password: string;
   @IsString()
-  gender: string;  
+  gender: string;
   @Transform(({ value }) => parseInt(value, 10))
   level: number;
   @IsPhoneNumber('GH')
@@ -28,4 +30,10 @@ export class CreateStudentDto {
   @IsOptional()
   @IsString()
   department: string;
+  @IsOptional()
+  @IsString()
+  resetCode:string;
+  @IsOptional()
+  @IsDate()
+  resetCodeExpiry: Date;
 }

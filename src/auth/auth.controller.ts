@@ -1,6 +1,6 @@
 import { Body, Controller, HttpException, Post, Request } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { authPayloadDto } from './dto/auth.dto';
+import { authPayloadDto, studentPayloadDto } from './dto/auth.dto';
 import { Request as request } from 'express'
 @Controller('auth')
 export class AuthController {
@@ -15,6 +15,19 @@ export class AuthController {
             throw new HttpException('Invalid  Credentials', 401)
         }
 
+        return user
+
+    }
+    @Post('student/login')
+    async studentLogin(@Request() req: request, @Body() authPayload: studentPayloadDto) {
+        req.user
+        const user = await  this.authService.validateStudent(authPayload)
+
+        if (!user) {
+
+            throw new HttpException('Invalid  Credentials', 401)
+        }
+        console.log(user)
         return user
 
     }

@@ -25,24 +25,26 @@ model admin {
 }
 
 model student {
-  id          String       @id @default(uuid())
-  studentId   String       @unique
-  profile     String
-  fullName    String
-  email       String?
-  password    String
-  gender      String
-  level       Int
-  disabled    Boolean?     @default(false)
-  telephone   String       @unique
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  department  String?
-  allocation  allocation?
-  affilliate  String      @default("Autonomy")
-  hall        hall?        @relation(fields: [hallId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  hallId      String?
-  roomRequest roomRequest?
+  id              String       @id @default(uuid())
+  studentId       String       @unique
+  profile         String?
+  fullName        String
+  email           String?      @unique
+  password        String
+  gender          String
+  resetCode       String?
+  resetCodeExpiry DateTime?
+  level           Int
+  disabled        Boolean?     @default(false)
+  telephone       String       @unique
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  department      String?
+  allocation      allocation?
+  affilliate      String       @default("Autonomy")
+  hall            hall?        @relation(fields: [hallId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  hallId          String?
+  roomRequest     roomRequest?
 }
 
 model allocation {

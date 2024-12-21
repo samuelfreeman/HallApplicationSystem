@@ -11,15 +11,15 @@ allocation
 
 
 flow:
-student registers him/herself
-student makes payment 
-student makes a room request via the mobile application 
+student registers him/herself 
+student makes payment   
+student makes a room request via the mobile application  
 so when student submits a room request , automaically they will be assigined to a room
 
-admin sees all requests 
+admin sees all requests  
 admin accepts all requests
 admin allocate rooms for students 
-admin add rooms
+admin add rooms 
 admin view room analytics 
 
 
@@ -32,8 +32,6 @@ allocation of room to students have to be automatic
 
 
 roomrequest and allocation  should become one 
-
-
 
 
  when student makes a room-request 
@@ -50,7 +48,6 @@ the status is not occupied
  then we  get the room id 
  then we take the students id 
  we create a new allocation  by assigning student to room id 
-
  this will make the process very automatic 
 
 
@@ -92,6 +89,5 @@ But they must be an affliate of the hall first.
 
 i am pondering wether the hall entity is needed since its for just one hall which is autonomy
 then how will i get the number of rooms - by doing analytics on the room 
-
 
  Must do : Use Guards to get the jwt token of a signedIn or logged in student then take that to look for his  profile

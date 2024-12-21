@@ -41,7 +41,7 @@ describe('StudentController', () => {
     cloudinaryService = module.get<CloudinaryService>(CloudinaryService); // Assign cloudinaryService
   });
   it('should throw NotFoundException if student is not found', async () => {
-    const studentId = 'non-existing-id';
+    const studentId = "non-existing-id";
     mockStudentService.findByStudentId.mockResolvedValue(null);
 
     await expect(controller.findStudentById(studentId)).rejects.toThrow(NotFoundException);
@@ -69,7 +69,7 @@ describe('StudentController', () => {
     // Mocking studentService.create to resolve successfully with the created student data
     mockStudentService.create.mockResolvedValue(mockCreateStudentDto);
 
-    const result = await controller.create(mockFile, mockCreateStudentDto as any);
+    const result = await controller.create(mockCreateStudentDto as any);
 
     // Assertions to verify the behavior
     expect(cloudinaryService.uploadImage).toHaveBeenCalledWith(mockFile.path);

@@ -4,6 +4,7 @@ import { UpdateStudentDto } from './dto/update-student.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { PasswordService } from 'src/password/password.service';
 import { MailService } from 'src/mail/mail.service';
+import { data } from 'autoprefixer';
 @Injectable()
 export class StudentService {
   constructor(
@@ -18,7 +19,7 @@ export class StudentService {
       createStudentDto.password,
     );
 
-    
+
     return this.prisma.student.create({
 
       data: createStudentDto,
@@ -86,9 +87,61 @@ export class StudentService {
 
 
 
-  forgotPassword(email: string) {
-    return this.mail.sendMail(email, "Testing", "The nodemailer is working", ` <p>Click here to reset your password :<a href=" https:localhost:3000/resetPassword/">  Click here </a> </p>   `)
+  async forgotPassword(email: string) {
+    const code = Math.floor(1000 + Math.random() * 9000).toString();
 
+    const user = await this.prisma.student.findUnique({
+      where: {
+        email,
+      },
+    });
+    if (user) {
+
+      user.resetCode = code;
+      const expiry = new Date(new Date().getTime() + 300000);
+      
+   
+
+     await this.prisma.student.update({
+        where: {
+          email: user.email
+        },
+        data: {
+          resetCode: code,
+          resetCodeExpiry: expiry
+        },
+      })
+    }
+    
+    else {
+      throw new BadRequestException("User with this email does not exist")
+    }
+
+
+    return this.mail.sendMail(email, "Testing", "The nodemailer is working", ` <p>Dear Student your code is ${code} </p>   `)
+
+  }
+
+
+
+  async verifyResetCode(email: string, code: string): Promise<void> {
+    
+    const user = await this.prisma.student.findUnique({ where: { email } });
+    console.log(user.resetCodeExpiry)
+    console.log(user)
+    if (!user || user.resetCodeExpiry < new Date()) {
+      throw new Error('Invalid or expired code');
+    }
+    // Clear reset code after successful verification
+    await this.prisma.student.update({
+      where: {
+        email: email,
+      },
+      data: {
+        resetCode: null,
+        resetCodeExpiry: null
+      }
+    });
   }
 
 

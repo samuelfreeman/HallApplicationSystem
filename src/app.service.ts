@@ -22,43 +22,6 @@ export class AppService {
 
 
   getHello() {
-
-    const cast = {
-      "characters": [
-
-        {
-          "name": "John Doe",
-          "age": 30,
-          "gender": "Male",
-          "occupation": "Software Engineer"
-        },
-        {
-          "name": "Jane Doe",
-          "age": 28,
-          "gender": "Female",
-          "occupation": "Product Manager"
-        },
-        {
-          "name": "Alice Doe",
-          "age": 32,
-          "gender": "Female",
-          "occupation": "UX Designer"
-        },
-        {
-          "name": "Bob Doe",
-          "age": 25,
-          "gender": "Male",
-          "occupation": "QA Engineer"
-        },
-        {
-          "name": "Charlie Doe",
-          "age": 35,
-          "gender": "Male",
-          "occupation": "Project Manager"
-        }
-      ]
-    }
-    const title = 'Home'
-    return {  title };
+return "Hello Students"
   }
 }

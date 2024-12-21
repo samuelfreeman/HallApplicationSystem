@@ -11,4 +11,7 @@ export class UpdateStudentDto extends PartialType(CreateStudentDto) {
   level?: number;
   telephone?: string;
   department?: string;
+  resetCode?: string;
+  resetCodeExpiry?: Date;
+
 }

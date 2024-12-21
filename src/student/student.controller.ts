@@ -27,55 +27,54 @@ import { ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CacheInterceptor } from '@nestjs/cache-manager';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
+import { VerifyCode } from './dto/verify-code';
 @ApiTags("Student")
 @Controller('student')
 export class StudentController {
   constructor(private readonly studentService: StudentService, private readonly cloudinaryService: CloudinaryService) { }
-
   @Post('register')
-  @UsePipes(new ValidationPipe({ transform: true }))
-  @UseInterceptors(FileInterceptor('profile', multerConfig)) // 'profile' matches the input name in the form
+  // @UsePipes(new ValidationPipe({ transform: true }))
+  // @UseInterceptors(FileInterceptor('profile', multerConfig))
   async create(
-    @UploadedFile(
-      new ParseFilePipe({
-        validators: [
-          new MaxFileSizeValidator({ maxSize: 200000 }), // 200 KB
-        ],
-      })
-    )
-    file: Express.Multer.File,
-
+    // @UploadedFile(
+    //   new ParseFilePipe({
+    //     validators: [
+    //       new MaxFileSizeValidator({ maxSize: 200000 }), // 200 KB
+    //       new FileTypeValidator({ fileType: 'image/*' }), // Ensure it's an image
+    //     ],
+    //   })
+    // ) file: Express.Multer.File | undefined, // Allow file to be undefined
     @Body(ValidationPipe) createStudentDto: CreateStudentDto
   ) {
-    console.log(file.path)
-    // Ensure the file  present before trying to upload
-    if (!file) {
-      throw new BadRequestException('Missing required file: profile');
-    }
     try {
-      // Upload the file to Cloudinary
-      const imageUrl = await this.cloudinaryService.uploadImage(file.path);
+      // let imageUrl: string;
 
-      if (!imageUrl) {
-        throw new InternalServerErrorException('Error uploading image');
-      }
-      // Add the Cloudinary image URL to the DTO
-      createStudentDto.profile = imageUrl.secure_url;
+      // if (file) {
+      //   // If a file is provided, upload it
+      //   const uploadResult = await this.cloudinaryService.uploadImage(file.path);
+      //   if (!uploadResult) {
+      //     throw new InternalServerErrorException('Error uploading image');
+      //   }
+      //   imageUrl = uploadResult.secure_url;
+      // } else {
+      //   // Use a dummy image if no file is provided
+      const imageUrl = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fHBlcnNvbmF8ZW58MHx8MHx8fDA%3D';
+      // }
+
+      // Add the image URL to the DTO
+      createStudentDto.profile = imageUrl;
+
 
       // Create the student
-      return await this.studentService.create(createStudentDto);
+      const student = await this.studentService.create(createStudentDto);
+      return {
+        ...student
+      }
 
     } catch (error) {
       console.error('Error during student creation:', error);
       throw new InternalServerErrorException('Error creating student');
     }
-  }
-
-
-  @Get("register")
-  @Render('signUp') // renders thhe signUp page
-  renderRegister() {
-    return { title: "Registration Page" };
   }
 
 
@@ -86,6 +85,13 @@ export class StudentController {
     return this.studentService.forgotPassword(checkForgotPassword.email);
   }
 
+  @Post('verify-code')
+
+  verifyResetCode(@Body(ValidationPipe)  verifyCode: VerifyCode) {
+    
+
+    return this.studentService.verifyResetCode(verifyCode.email, verifyCode.resetCode);
+  }
   //  implementing cache 
   // @UseInterceptors(CacheInterceptor)
   @Get()
