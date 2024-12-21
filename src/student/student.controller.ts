@@ -28,6 +28,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { CacheInterceptor } from '@nestjs/cache-manager';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { VerifyCode } from './dto/verify-code';
+import { ResetPass } from './dto/resetPass';
 @ApiTags("Student")
 @Controller('student')
 export class StudentController {
@@ -85,11 +86,15 @@ export class StudentController {
     return this.studentService.forgotPassword(checkForgotPassword.email);
   }
 
+  @Post('reset-password')
+  verifyAndResetPassword(@Body(ValidationPipe) resetPass: ResetPass) {
+    return this.studentService.resetPassword(resetPass.email, resetPass.password);
+  }
+
   @Post('verify-code')
 
   verifyResetCode(@Body(ValidationPipe)  verifyCode: VerifyCode) {
     
-
     return this.studentService.verifyResetCode(verifyCode.email, verifyCode.resetCode);
   }
   //  implementing cache 

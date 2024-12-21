@@ -99,10 +99,10 @@ export class StudentService {
 
       user.resetCode = code;
       const expiry = new Date(new Date().getTime() + 300000);
-      
-   
 
-     await this.prisma.student.update({
+
+
+      await this.prisma.student.update({
         where: {
           email: user.email
         },
@@ -112,7 +112,7 @@ export class StudentService {
         },
       })
     }
-    
+
     else {
       throw new BadRequestException("User with this email does not exist")
     }
@@ -122,10 +122,20 @@ export class StudentService {
 
   }
 
+  async resetPassword(email: string, password: string) {
+    return await this.prisma.student.update({
+      where: {
+        email
+      },
+      data: {
+        password: await this.bcrypt.hashPassword(password)
+      }
+    })
 
+  }
 
   async verifyResetCode(email: string, code: string): Promise<void> {
-    
+
     const user = await this.prisma.student.findUnique({ where: { email } });
     console.log(user.resetCodeExpiry)
     console.log(user)
