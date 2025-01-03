@@ -70,6 +70,14 @@ model rooms {
   hallId              String?
 }
 
+model contactUs {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  message   String
+  createdAt DateTime @default(now())
+}
+
 model roomRequest {
   id        String   @id @default(uuid())
   student   student  @relation(fields: [StudentId], references: [studentId], onDelete: Cascade, onUpdate: Cascade)

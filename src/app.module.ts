@@ -18,6 +18,7 @@ import { CacheModule } from '@nestjs/cache-manager';
 import { MulterModule } from '@nestjs/platform-express';
 import { MailModule } from './mail/mail.module';
 import { CloudinaryService } from './cloudinary/cloudinary.service';
+import { ContactUsModule } from './contact-us/contact-us.module';
 
 
 
@@ -41,6 +42,7 @@ import { CloudinaryService } from './cloudinary/cloudinary.service';
     RoomRequestModule,
     RoomsModule,
     MailModule,
+    ContactUsModule,
   ],
   controllers: [AppController],
   providers: [AppService, PasswordService, CloudinaryService],
