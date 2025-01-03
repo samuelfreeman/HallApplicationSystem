@@ -27,6 +27,8 @@ export class AuthController {
 
             throw new HttpException('Invalid  Credentials', 401)
         }
+        await new Promise(resolve => setTimeout(resolve, 2000));
+
         console.log(user)
         return user
 

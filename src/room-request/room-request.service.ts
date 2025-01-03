@@ -7,7 +7,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class RoomRequestService {
   constructor(private readonly prisma: PrismaService
   ) { }
-  async create(createRoomRequestDto: CreateRoomRequestDto) {
+  async create(createRoomRequestDto: CreateRoomRequestDto) { 
 
     try {
       /*
