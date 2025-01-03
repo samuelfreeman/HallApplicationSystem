@@ -17,7 +17,7 @@ export class ContactUsService {
             })
             if (!message) throw new BadRequestException("Could not add message ")
             await this.mail.contactUs(messageDto.email, `  Feedback From ${messageDto.name} `, messageDto.message)
-        
+
             return message;
 
         } catch (error) {
