@@ -19,6 +19,8 @@ import { MulterModule } from '@nestjs/platform-express';
 import { MailModule } from './mail/mail.module';
 import { CloudinaryService } from './cloudinary/cloudinary.service';
 import { ContactUsModule } from './contact-us/contact-us.module';
+import { TaskServiceService } from './task-service/task-service.service';
+import { TaskServiceModule } from './task-service/task-service.module';
 
 
 
@@ -43,8 +45,9 @@ import { ContactUsModule } from './contact-us/contact-us.module';
     RoomsModule,
     MailModule,
     ContactUsModule,
+    TaskServiceModule,
   ],
   controllers: [AppController],
-  providers: [AppService, PasswordService, CloudinaryService],
+  providers: [AppService, PasswordService, CloudinaryService, TaskServiceService],
 })
 export class AppModule { }
