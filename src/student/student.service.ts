@@ -15,6 +15,23 @@ export class StudentService {
 
   ) { }
   async create(createStudentDto: CreateStudentDto) {
+
+    const checkUser = await this.prisma.student.findFirst({
+      where: {
+        OR: [
+          {
+            studentId: createStudentDto.studentId,
+            email: createStudentDto.email,
+            telephone: createStudentDto.telephone
+
+          }
+        ]
+      }
+    })
+    if (checkUser) {
+      throw new BadRequestException('User already exists');
+    }
+
     createStudentDto.password = await this.bcrypt.hashPassword(
       createStudentDto.password,
     );
