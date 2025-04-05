@@ -5,13 +5,14 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { PasswordService } from 'src/password/password.service';
 import { MailService } from 'src/mail/mail.service';
 import { data } from 'autoprefixer';
+import { JwtService } from '@nestjs/jwt';
 @Injectable()
 export class StudentService {
   constructor(
     private readonly prisma: PrismaService,
     private bcrypt: PasswordService,
     private mail: MailService,
-
+   private jwt:JwtService,
 
   ) { }
   async create(createStudentDto: CreateStudentDto) {
@@ -36,11 +37,15 @@ export class StudentService {
       createStudentDto.password,
     );
 
-
-    return this.prisma.student.create({
-
+    
+    const student = await this.prisma.student.create({
+      
       data: createStudentDto,
     });
+    const {password , ...result}= student
+    const token =  this.jwt.sign(result)
+    
+   return {token,result} 
   }
 
   findAll() {

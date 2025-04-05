@@ -20,7 +20,7 @@ export class AuthService {
             const { password, ...result } = user;
             const token = this.jwt.sign(result)
 
-            return token
+            return {token,result}
         }
     }
 
@@ -41,7 +41,7 @@ export class AuthService {
             
             const token =  this.jwt.sign(result)
             
-            return token
+            return {token,result}
         }
     }
 }

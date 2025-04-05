@@ -5,8 +5,12 @@ import { PrismaModule } from 'src/prisma/prisma.module';
 import { PasswordModule } from 'src/password/password.module';
 import { MailModule } from 'src/mail/mail.module';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
+import { JwtModule } from '@nestjs/jwt';
 @Module({
-  imports: [PrismaModule, PasswordModule, MailModule],
+  imports: [PrismaModule, PasswordModule, MailModule,   JwtModule.register({
+      secret:process.env.JWT_SECRET,
+      signOptions:{expiresIn:'1h'}
+    })],
   controllers: [StudentController],
   providers: [StudentService,CloudinaryService],
 })

@@ -77,7 +77,7 @@ export class StudentController {
 
     } catch (error) {
       console.error('Error during student creation:', error);
-    throw  error ||  new InternalServerErrorException('Error creating student') ;
+    throw  new InternalServerErrorException('Error creating student') ;
     }
   }
 
