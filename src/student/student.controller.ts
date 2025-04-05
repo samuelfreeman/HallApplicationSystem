@@ -68,13 +68,16 @@ export class StudentController {
 
       // Create the student
       const student = await this.studentService.create(createStudentDto);
+      if(!student){
+        throw new BadRequestException("Student Already Exist")
+      }
       return {
         ...student
       }
 
     } catch (error) {
       console.error('Error during student creation:', error);
-      throw new InternalServerErrorException('Error creating student');
+    throw  error ||  new InternalServerErrorException('Error creating student') ;
     }
   }
 
@@ -92,7 +95,6 @@ export class StudentController {
   }
 
   @Post('verify-code')
-
   verifyResetCode(@Body(ValidationPipe)  verifyCode: VerifyCode) {
     
     return this.studentService.verifyResetCode(verifyCode.email, verifyCode.resetCode);

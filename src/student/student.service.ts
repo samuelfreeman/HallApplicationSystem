@@ -29,7 +29,7 @@ export class StudentService {
       }
     })
     if (checkUser) {
-      throw new BadRequestException('User already exists');
+      return false
     }
 
     createStudentDto.password = await this.bcrypt.hashPassword(
