@@ -6,9 +6,9 @@ import axios from 'axios';
 export class TasksService {
   private readonly logger = new Logger(TasksService.name);
 
-  @Cron('*/15 * * * *') //I want this to run every 15 minutes
+  @Cron('*/12 * * * *') //I want this to run every 112 minutes
   async handleCron() {
-    this.logger.debug('Pinging the server every 15 minutes');
+    this.logger.debug('Pinging the server every 12 minutes');
 
     try {
       const response = await axios.get('https://hallapplicationsystem.onrender.com/'); 
