@@ -19,7 +19,7 @@ export class StudentService {
 
     const checkUser = await this.prisma.student.findFirst({
       where: {
-        OR: [
+        AND: [
           {
             studentId: createStudentDto.studentId,
             email: createStudentDto.email,
