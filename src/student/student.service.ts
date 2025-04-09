@@ -12,19 +12,22 @@ export class StudentService {
     private readonly prisma: PrismaService,
     private bcrypt: PasswordService,
     private mail: MailService,
-   private jwt:JwtService,
+    private jwt: JwtService,
 
   ) { }
   async create(createStudentDto: CreateStudentDto) {
 
     const checkUser = await this.prisma.student.findFirst({
       where: {
-        AND: [
+        OR: [
           {
-            studentId: createStudentDto.studentId,
+            studentId: createStudentDto.studentId
+          },
+          {
             email: createStudentDto.email,
+          },
+          {
             telephone: createStudentDto.telephone
-
           }
         ]
       }
@@ -37,15 +40,15 @@ export class StudentService {
       createStudentDto.password,
     );
 
-    
+
     const student = await this.prisma.student.create({
-      
+
       data: createStudentDto,
     });
-    const {password , ...result}= student
-    const token =  this.jwt.sign(result)
-    
-   return {token,result} 
+    const { password, ...result } = student
+    const token = this.jwt.sign(result)
+
+    return { token, result }
   }
 
   findAll() {
