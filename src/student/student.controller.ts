@@ -17,6 +17,7 @@ import {
   Render,
   BadRequestException,
   UsePipes,
+  HttpException,
 } from '@nestjs/common';
 import { multerConfig } from '../multer/multer';
 import { StudentService } from './student.service';
@@ -67,17 +68,14 @@ export class StudentController {
 
 
       // Create the student
-      const student = await this.studentService.create(createStudentDto);
-      if(!student){
-        throw new BadRequestException("Student Already Exist")
-      }
+      const student = await this.studentService.create(createStudentDto);     
       return {
         ...student
       }
 
     } catch (error) {
       console.error('Error during student creation:', error);
-    throw  new InternalServerErrorException('Error creating student') ;
+   throw error ||  new InternalServerErrorException('Error creating student') ;
     }
   }
 

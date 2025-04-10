@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, HttpException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -32,8 +32,9 @@ export class StudentService {
         ]
       }
     })
+    
     if (checkUser) {
-      return false
+      throw   new HttpException('User already exists' ,400 )
     }
 
     createStudentDto.password = await this.bcrypt.hashPassword(
