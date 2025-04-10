@@ -9,74 +9,74 @@ export class RoomRequestService {
   ) { }
   async create(createRoomRequestDto: CreateRoomRequestDto) { 
 
-    try {
-      /*
+    // try {
+    //   /*
       
-      *we supposed to process payments right after checking  if rooms are available, 
-      *if they are then  we process the payment , we are going to use ecobanks api 
-      *or use momo services to 
-      *pay into the eco bank account the autonomy ecobank account 
+    //   *we supposed to process payments right after checking  if rooms are available, 
+    //   *if they are then  we process the payment , we are going to use ecobanks api 
+    //   *or use momo services to 
+    //   *pay into the eco bank account the autonomy ecobank account 
       
       
-      */
+    //   */
 
-      // * search for available rooms 
-      const room = await this.prisma.rooms.findFirst({
-        where: {
-          status: {
-            not: 'Occupied'
-          }
-        }
-      })
+    //   // * search for available rooms 
+    //   const room = await this.prisma.rooms.findFirst({
+    //     where: {
+    //       status: {
+    //         not: 'Occupied'
+    //       }
+    //     }
+    //   })
 
-      //  !if there are no rooms we throw an  error 
-      if (!room) {
-        throw new Error('No available rooms')
-      }
-      //  *we allocate room to students
-      //  *create a new allocation with the roomid and the student id
-      await this.prisma.allocation.create({
-        data: {
-          roomsId: room.id,
-          studentId: createRoomRequestDto.StudentId
+    //   //  !if there are no rooms we throw an  error 
+    //   if (!room) {
+    //     throw new Error('No available rooms')
+    //   }
+    //   //  *we allocate room to students
+    //   //  *create a new allocation with the roomid and the student id
+    //   await this.prisma.allocation.create({
+    //     data: {
+    //       roomsId: room.id,
+    //       studentId: createRoomRequestDto.StudentId
 
-        }
-      })
-      // * increase the number of allocations in the room entity 
-      await this.prisma.rooms.update({
-        where: {
-          id: room.id
-        },
-        data: {
-          numberOfAllocations: room.numberOfAllocations + 1
-        }
-      })
+    //     }
+    //   })
+    //   // * increase the number of allocations in the room entity 
+    //   await this.prisma.rooms.update({
+    //     where: {
+    //       id: room.id
+    //     },
+    //     data: {
+    //       numberOfAllocations: room.numberOfAllocations + 1
+    //     }
+    //   })
 
-      // *update  the rooms with number of allocation  to occupied
-      // ? so now when the number of allocations is equal to the limit we set the status to  occupied 
-      await this.prisma.rooms.updateMany({
-        where: {
-          numberOfAllocations: {
-            equals: this.prisma.rooms.fields.limit
-          }
-        },
-        data: {
-          status: 'Occupied'
-        }
-      })
+    //   // *update  the rooms with number of allocation  to occupied
+    //   // ? so now when the number of allocations is equal to the limit we set the status to  occupied 
+    //   await this.prisma.rooms.updateMany({
+    //     where: {
+    //       numberOfAllocations: {
+    //         equals: this.prisma.rooms.fields.limit
+    //       }
+    //     },
+    //     data: {
+    //       status: 'Occupied'
+    //     }
+    //   })
 
 
-      //  *Approve the request 
-      return this.prisma.roomRequest.create({
-        data: {
-          status: 'Approved',
-          StudentId: createRoomRequestDto.StudentId
-        }
-      })
+    //   //  *Approve the request 
+    //   return this.prisma.roomRequest.create({
+    //     data: {
+    //       status: 'Approved',
+    //       StudentId: createRoomRequestDto.StudentId
+    //     }
+    //   })
 
-    } catch (error) {
-      throw new InternalServerErrorException(error.message)
-    }
+    // } catch (error) {
+    //   throw new InternalServerErrorException(error.message)
+    // }
   }
 
   findAll() {
