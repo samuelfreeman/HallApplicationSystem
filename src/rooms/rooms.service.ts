@@ -49,6 +49,7 @@ export class RoomsService {
           studentId: assignRoomDto.studentId
         }
       })
+      console.log(already_assigned)
       if(already_assigned){
         throw new HttpException('User already assigned to a room',400)
       }
