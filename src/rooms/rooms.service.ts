@@ -1,15 +1,108 @@
-import { Injectable } from '@nestjs/common';
-import { CreateRoomDto } from './dto/create-room.dto';
+import { HttpException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { AssignRoomDto, CreateBlockDto, CreateFloorDto, CreateRoomDto } from './dto/create-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 @Injectable()
 export class RoomsService {
   constructor(private readonly prisma: PrismaService) { }
-  create(createRoomDto: CreateRoomDto) {
+  createRoom(createRoomDto: CreateRoomDto) {
     return this.prisma.rooms.create({
       data: createRoomDto,
     });
   }
+  createBlock(createBlockDto: CreateBlockDto) {
+    return this.prisma.blocks.create({
+      data: createBlockDto
+    })
+  }
+  createFloor(createFloorDto: CreateFloorDto) {
+    return this.prisma.floors.create({
+      data: createFloorDto
+    })
+  }
+  async getAllRooms() {
+    const rooms = await this.prisma.blocks.findMany({
+      orderBy: [
+        {
+          createdAt: "asc"
+        }
+      ],
+      include: {
+        floors: {
+          include: {
+            rooms: {
+              include: {
+                allocation: true
+              }
+            }
+          }
+        }
+      }
+    })
+    return rooms;
+  }
+
+  async assignRoom(assignRoomDto: AssignRoomDto) {
+    try {
+      const already_assigned = await this.prisma.allocation.findFirst({
+        where: {
+          studentId: assignRoomDto.studentId
+        }
+      })
+      if(already_assigned){
+        throw new HttpException('User already assigned to a room',400)
+      }
+
+
+      const numberOfOccupants = await this.prisma.rooms.findUnique({
+        where: {
+          id: assignRoomDto.roomId
+        },
+        include: {
+          _count: {
+            select: {
+              allocation: true
+            }
+          }
+        }
+
+      })
+
+      // check if the room is full 
+
+      if (numberOfOccupants._count.allocation === numberOfOccupants.max_occupants) {
+        await this.prisma.rooms.update({
+          where: {
+            id: assignRoomDto.roomId
+          },
+          data: {
+            status: "Not_Available"
+          }
+        })
+        throw new HttpException("Room is full", 400)
+      } else {
+        await this.prisma.rooms.update({
+          where: {
+            id: assignRoomDto.roomId
+          },
+          data: {
+            status: "Available",
+            total_occupants: {
+              increment: 1
+            },
+          }
+        })
+
+        return this.prisma.allocation.create({
+          data: assignRoomDto
+        })
+      }
+    } catch (error) {
+      throw error || new InternalServerErrorException('Error creating student');
+
+    }
+  }
+
 
   findAll() {
     return this.prisma.rooms.findMany({

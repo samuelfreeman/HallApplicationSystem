@@ -25,49 +25,66 @@ model admin {
 }
 
 model student {
-  id              String       @id @default(uuid())
-  studentId       String       @unique
+  id              String      @id @default(uuid())
+  studentId       String      @unique
   profile         String?
   fullName        String
-  email           String?      @unique
+  email           String?     @unique
   password        String
   gender          String
   resetCode       String?
   resetCodeExpiry DateTime?
   level           Int
-  disabled        Boolean?     @default(false)
-  telephone       String       @unique
-  createdAt       DateTime     @default(now())
-  updatedAt       DateTime     @updatedAt
+  disabled        Boolean?    @default(false)
+  telephone       String      @unique
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
   department      String?
   allocation      allocation?
-  affilliate      String       @default("Autonomy")
-  hall            hall?        @relation(fields: [hallId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  affilliate      String      @default("Autonomy")
+  hall            hall?       @relation(fields: [hallId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   hallId          String?
-  roomRequest     roomRequest?
 }
 
 model allocation {
   id        String   @id @default(uuid())
   student   student  @relation(fields: [studentId], references: [studentId])
   studentId String   @unique
-  rooms     rooms    @relation(fields: [roomsId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  roomsId   String
+  rooms     rooms    @relation(fields: [roomId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  roomId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model floors {
+  id        String   @id @default(uuid())
+  number    Int
+  rooms     rooms[]
+  blocks    blocks?  @relation(fields: [blocksId], references: [id])
+  blocksId  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model blocks {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  floors    floors[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model rooms {
-  id                  String       @id @default(uuid())
-  roomnumber          Int          @unique
-  status              status
-  blockName           String
-  createdAt           DateTime     @default(now())
-  allocation          allocation[]
-  numberOfAllocations Int          @default(0)
-  limit               Int          @default(4)
-  hall                hall?        @relation(fields: [hallId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  hallId              String?
+  id              String       @id @default(uuid())
+  number          Int
+  status          stats
+  floors          floors?      @relation(fields: [floorId], references: [id])
+  floorId         String?
+  total_occupants Int          @default(0)
+  max_occupants   Int          @default(4)
+  allocation      allocation[]
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
 }
 
 model contactUs {
@@ -78,29 +95,18 @@ model contactUs {
   createdAt DateTime @default(now())
 }
 
-model roomRequest {
-  id        String   @id @default(uuid())
-  student   student  @relation(fields: [StudentId], references: [studentId], onDelete: Cascade, onUpdate: Cascade)
-  StudentId String   @unique
-  status    options
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
 model hall {
   id        String    @id @default(uuid())
   name      String
   location  String
   student   student[]
-  rooms     rooms[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }
 
-enum status {
-  Vacant
-  Occupied
-  Partially_Occupied
+enum stats {
+  Available
+  Not_Available
 }
 
 enum options {

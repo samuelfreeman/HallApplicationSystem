@@ -15,7 +15,7 @@ export class HallService {
     return this.prisma.hall.findMany({
       include: {
         student: true,
-        rooms: true
+      
       },
     });
   }
@@ -25,7 +25,7 @@ export class HallService {
       where: { id },
       include: {
         student: true,
-        rooms: true
+        
       },
     });
   }

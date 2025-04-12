@@ -69,7 +69,7 @@ export class StudentService {
           select: {
             rooms: {
               select: {
-                roomnumber: true,
+                number: true,
               },
             },
           },

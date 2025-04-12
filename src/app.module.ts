@@ -9,7 +9,7 @@ import { PasswordModule } from './password/password.module';
 import { ConfigModule } from '@nestjs/config';
 import { StudentModule } from './student/student.module';
 import { HallModule } from './hall/hall.module';
-import { RoomRequestModule } from './room-request/room-request.module';
+
 import { RoomsModule } from './rooms/rooms.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import type { RedisClientOptions } from 'redis';
@@ -20,6 +20,7 @@ import { MailModule } from './mail/mail.module';
 import { CloudinaryService } from './cloudinary/cloudinary.service';
 import { ContactUsModule } from './contact-us/contact-us.module';
 import { TasksService } from './task-service/task-service.service';
+
 
 
 
@@ -42,10 +43,11 @@ import { TasksService } from './task-service/task-service.service';
     ConfigModule.forRoot(),
     StudentModule,
     HallModule,
-    RoomRequestModule,
+    
     RoomsModule,
     MailModule,
     ContactUsModule,
+    
     
   ],
   controllers: [AppController],

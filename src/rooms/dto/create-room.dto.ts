@@ -1,12 +1,24 @@
 export enum RoomStatus {
-    Vacant = 'Vacant',
-    Occupied = 'Occupied',
-    PartiallyOccupied = 'Partially_Occupied'
+    Not_Available = "Not_Available",
+    Available = 'Available'
 }
 export class CreateRoomDto {
-    roomnumber: number
+    number: number
     status: RoomStatus
-    blockName: string
-    hallId?: string
+    floorId?: string
 
+}
+
+export class CreateBlockDto {
+    name: string
+}
+
+export class CreateFloorDto {
+    number: number
+    blocksId: string
+}
+
+export class AssignRoomDto {
+    studentId: string
+    roomId: string
 }
