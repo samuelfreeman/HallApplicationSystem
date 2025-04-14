@@ -4,4 +4,5 @@ export class CreateComplaintDto {
     complaint_category: string
     imgUrl?: string
     description: string
+    
 }

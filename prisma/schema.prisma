@@ -91,7 +91,6 @@ model contactUs {
   id                 String   @id @default(uuid())
   full_name          String
   room_number        Int
-  email              String
   complaint_category String
   imgUrl             String?
   description        String
