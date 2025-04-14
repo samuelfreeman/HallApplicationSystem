@@ -6,6 +6,7 @@ import { PasswordService } from 'src/password/password.service';
 import { MailService } from 'src/mail/mail.service';
 import { data } from 'autoprefixer';
 import { JwtService } from '@nestjs/jwt';
+import { all } from 'axios';
 @Injectable()
 export class StudentService {
   constructor(
@@ -77,12 +78,50 @@ export class StudentService {
       },
     });
   }
+//   Room Details
+
+// Room Type: Shared
+
+// Room Assigned: 3
+
+// Floor/Block: 9
+
+// Duration of Stay: 8 months
 
   async findByStudentId(studentId: string) {
 
 
     const user = await this.prisma.student.findUnique({
       where: { studentId },
+      include: {
+        allocation: {
+          include: {
+            rooms: {
+              include: {
+                floors: {
+                  include: {
+                    blocks: {
+                      select: {
+                        name: true, // Block name
+                      },
+                    },
+                  },
+                  select: {
+                    number: true, // Floor number
+                  },
+
+                },
+                
+              },
+              select:{
+                number:true
+              }
+            },
+
+          },
+        },
+      },
+
     });
     console.log(user)
 
@@ -94,12 +133,42 @@ export class StudentService {
 
 
   }
-  findOne(id: string) {
-    return this.prisma.student.findUnique({
+  async findOne(id: string) {
+ const user =   await this.prisma.student.findUnique({
       where: {
         id,
       },
     });
+
+    const allocation =await this.prisma.allocation.findUnique({
+      where :{
+        studentId:user.studentId
+      }
+    })
+    if(allocation !=null ){
+    console.log(allocation)
+    const room = await this.prisma.rooms.findUnique({
+      where: {
+        id: allocation.roomId
+      },
+    
+    });
+    const floor = await this.prisma.floors.findUnique({
+      where:{
+        id:room.floorId
+      }
+    })
+    const block = await this.prisma.blocks.findUnique({
+      where:{
+        id:floor.blocksId
+      }
+    })
+    return {...user,roomNumber:room.number,floorNumber:floor.number,blockName:block.name}
+  }else{
+    return user
+    
+  }
+
   }
 
   update(id: string, updateStudentDto: UpdateStudentDto) {

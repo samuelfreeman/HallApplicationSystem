@@ -20,6 +20,7 @@ import { MailModule } from './mail/mail.module';
 import { CloudinaryService } from './cloudinary/cloudinary.service';
 import { ContactUsModule } from './contact-us/contact-us.module';
 import { TasksService } from './task-service/task-service.service';
+import { ComplaintModule } from './complaint/complaint.module';
 
 
 
@@ -47,6 +48,7 @@ import { TasksService } from './task-service/task-service.service';
     RoomsModule,
     MailModule,
     ContactUsModule,
+    ComplaintModule,
     
     
   ],

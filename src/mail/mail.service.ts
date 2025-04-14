@@ -35,7 +35,7 @@ export class MailService {
             throw new Error('Failed to send mail')
         }
     }
-    async contactUs(from: string, subject: string, text: string) {
+    async contactUs(from: number, subject: string, text: string) {
         const mailOptions = {
             from,
             to: process.env.EMAIL,

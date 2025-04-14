@@ -15,8 +15,8 @@ export class ContactUsService {
             const message = await this.prisma.contactUs.create({
                 data: messageDto
             })
-            if (!message) throw new BadRequestException("Could not add message ")
-            await this.mail.contactUs(messageDto.email, `  Feedback From ${messageDto.name} `, messageDto.message)
+            if (!message) throw new  BadRequestException("Could not add message ")
+            await this.mail.contactUs(messageDto.room_number, `  Feedback From ${messageDto.full_name} `, messageDto.description)
 
             return message;
 

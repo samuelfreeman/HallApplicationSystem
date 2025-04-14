@@ -24,7 +24,7 @@ export class RoomsService {
     const rooms = await this.prisma.blocks.findMany({
       orderBy: [
         {
-          createdAt: "asc"
+          createdAt: "desc"
         }
       ],
       include: {
