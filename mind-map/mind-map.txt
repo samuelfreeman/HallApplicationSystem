@@ -30,7 +30,7 @@ new implementation :
 allocation of room to students have to be automatic
 
 
-
+first we check for all rooms that are full and update the status
 roomrequest and allocation  should become one 
 
 

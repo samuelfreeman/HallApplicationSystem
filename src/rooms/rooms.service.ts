@@ -21,6 +21,26 @@ export class RoomsService {
     })
   }
   async getAllRooms() {
+
+    const occupiedRooms = await this.prisma.rooms.findMany({
+      where: {
+        total_occupants: {
+          equals: 4
+        }
+      }
+    })
+    for (const room of occupiedRooms) {
+
+      const updateRoomAvailability = await this.prisma.rooms.update({
+        where: {
+          id: room.id
+        },
+        data: {
+          status: "Not_Available"
+        }
+      })
+    console.log(updateRoomAvailability)
+    }
     const rooms = await this.prisma.blocks.findMany({
       orderBy: [
         {
@@ -50,8 +70,8 @@ export class RoomsService {
         }
       })
       console.log(already_assigned)
-      if(already_assigned){
-        throw new HttpException('User already assigned to a room',400)
+      if (already_assigned) {
+        throw new HttpException('User already assigned to a room', 400)
       }
 
 
