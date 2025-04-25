@@ -53,7 +53,13 @@ export class RoomsService {
             rooms: {
               include: {
                 allocation: true
-              }
+              },
+              orderBy:[
+                {
+                  number:"asc"
+                }
+              ]
+
             }
           }
         }
