@@ -41,15 +41,16 @@ export class StudentService {
     createStudentDto.password = await this.bcrypt.hashPassword(
       createStudentDto.password,
     );
-
-
+    
+    
     const student = await this.prisma.student.create({
-
+      
       data: createStudentDto,
     });
     const { password, ...result } = student
     const token = this.jwt.sign(result)
-
+    await this.mail.contactUs(1,`New user just signed up!`,`${student.fullName}`)
+    
     return { token, result }
   }
 
