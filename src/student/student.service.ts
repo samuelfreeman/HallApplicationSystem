@@ -120,8 +120,14 @@ export class StudentService {
             },
 
           },
+          select:{
+            id:true
+          }
+         
         },
+        
       },
+    
 
     });
     console.log(user)
