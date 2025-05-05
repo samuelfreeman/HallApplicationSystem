@@ -8,6 +8,7 @@ export class PaystackService {
   private readonly secretKey = process.env.PAYSTACK_SECRET_KEY;
   private readonly baseUrl = process.env.PAYSTACK_BASE_URL;
   async InitializeTransaction(email: string, amount: number, callbackUrl: string) {
+   try {
     const response = await axios.post(`${this.baseUrl}/transaction/initialize`, {
       email,
       amount,
@@ -20,9 +21,14 @@ export class PaystackService {
     }
     )
     return response.data
+   } catch (error) {
+    console.log(error)
+    return error
+   }
   }
 
   async verifyTransaction(reference: string) {
+  try {
     const response = await axios.get(`${this.baseUrl}/transaction/verify/${reference}`, {
       headers: {
         Authorization: `Bearer ${this.secretKey}`,
@@ -31,6 +37,10 @@ export class PaystackService {
     }
     )
     return response.data
+  } catch (error) {
+   console.log(error) 
+   return error
+  }
   }
   findAll() {
     return `This action returns all paystack`;
