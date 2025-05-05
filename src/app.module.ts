@@ -21,6 +21,9 @@ import { CloudinaryService } from './cloudinary/cloudinary.service';
 import { ContactUsModule } from './contact-us/contact-us.module';
 import { TasksService } from './task-service/task-service.service';
 import { ComplaintModule } from './complaint/complaint.module';
+import { PaystackModule } from './paystack/paystack.module';
+import { PaystackController } from './paystack/paystack.controller';
+import { PaystackService } from './paystack/paystack.service';
 
 
 
@@ -44,15 +47,15 @@ import { ComplaintModule } from './complaint/complaint.module';
     ConfigModule.forRoot(),
     StudentModule,
     HallModule,
-    
     RoomsModule,
     MailModule,
     ContactUsModule,
     ComplaintModule,
+    PaystackModule,
     
     
   ],
-  controllers: [AppController],
-  providers: [AppService, PasswordService, CloudinaryService, TasksService],
+  controllers: [AppController,PaystackController],
+  providers: [AppService, PasswordService, CloudinaryService, TasksService,PaystackService],
 })
 export class AppModule { }
