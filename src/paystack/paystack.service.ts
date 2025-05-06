@@ -12,6 +12,7 @@ export class PaystackService {
     const response = await axios.post(`${this.baseUrl}/transaction/initialize`, {
       email,
       amount,
+      "currency":"GHS",
       callback_url: callbackUrl
     }, {
       headers: {
@@ -20,7 +21,7 @@ export class PaystackService {
       }
     }
     )
-    return response.data
+    return response
    } catch (error) {
     console.log(error)
     return error

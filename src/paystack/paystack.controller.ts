@@ -9,15 +9,18 @@ export class PaystackController {
 
   @Post("initialize")
 
-  async create(  @Query("email") email:string,
-  @Query("amount") amount:number ,@Res() res:any) {
+  async create(  @Body("email") email:string,
+  @Body("amount") amount:number ) {
+    console.log(email,amount)
     const callbackUrl = `https://hall-application-system-app.vercel.app/paymentConfirm`  
   const result =  await this.paystackService.InitializeTransaction(email,amount,callbackUrl);
-return res.redirect(result.data.authorization_url)
+  console.log(result.data.data)
+return result.data.data
   }
 
-  @Get('callback')
-  async callback(@Query('reference') reference: string) {
+  @Post("callback")
+  async callback(@Body('reference') reference: string) {
+    console.log(reference)
     const verification = await this.paystackService.verifyTransaction(reference);
 
     // Optional: Save payment details to DB here
