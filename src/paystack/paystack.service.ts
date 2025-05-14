@@ -2,10 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { CreatePaystackDto } from './dto/create-paystack.dto';
 import axios from 'axios';
 import { UpdatePaystackDto } from './dto/update-paystack.dto';
-
+import { PrismaService } from 'src/prisma/prisma.service';
 @Injectable()
 export class PaystackService {
+  constructor(private readonly prisma: PrismaService) {}
   private readonly secretKey = process.env.PAYSTACK_SECRET_KEY;
+  
   private readonly baseUrl = process.env.PAYSTACK_BASE_URL;
   async InitializeTransaction(email: string, amount: number, callbackUrl: string) {
    try {
@@ -21,6 +23,10 @@ export class PaystackService {
       }
     }
     )
+    // TODO i want to save the user's information along with some other information into the database 
+    // const transaction = await this.prisma.transaction.create({
+    
+    // })
     return response
    } catch (error) {
     console.log(error)

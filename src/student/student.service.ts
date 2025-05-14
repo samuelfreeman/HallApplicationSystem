@@ -115,7 +115,9 @@ export class StudentService {
                 
               },
               select:{
-                number:true
+                id:true,
+                number:true // room number
+              
               }
             },
 
@@ -170,7 +172,7 @@ export class StudentService {
         id:floor.blocksId
       }
     })
-    return {...user,roomNumber:room.number,floorNumber:floor.number,blockName:block.name}
+    return {...user,roomId:room.id,roomNumber:room.number,floorNumber:floor.number,blockName:block.name,}
   }else{
     return user
     

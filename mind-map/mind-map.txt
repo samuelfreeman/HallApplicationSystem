@@ -95,3 +95,6 @@ then how will i get the number of rooms - by doing analytics on the room
 
 
 what are the
+
+
+Now i want to allow users to be able to chat with both their roommates and other members in the Hall.

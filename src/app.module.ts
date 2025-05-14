@@ -24,13 +24,19 @@ import { ComplaintModule } from './complaint/complaint.module';
 import { PaystackModule } from './paystack/paystack.module';
 import { PaystackController } from './paystack/paystack.controller';
 import { PaystackService } from './paystack/paystack.service';
-
+import { JwtModule } from '@nestjs/jwt';
+import { ChatModule } from './chat/chat.module';
 
 
 
 
 @Module({
   imports: [
+    JwtModule.register({
+      global:true ,
+      secret:process.env.JWT_SECRET,
+      signOptions:{expiresIn:'1d'}
+    }),
     //   CacheModule.register<RedisClientOptions>({
     //   store: redisStore,
     //   url: "redis://default:R5QGmA2OqjV9UTzAaLmftbTudDcVqSxu@redis-10659.c245.us-east-1-3.ec2.redns.redis-cloud.com:10659",
@@ -52,6 +58,7 @@ import { PaystackService } from './paystack/paystack.service';
     ContactUsModule,
     ComplaintModule,
     PaystackModule,
+    ChatModule,
     
     
   ],

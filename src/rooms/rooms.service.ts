@@ -1,9 +1,10 @@
-import { HttpException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { HttpException, Injectable, InternalServerErrorException, UseGuards } from '@nestjs/common';
 import { AssignRoomDto, CreateBlockDto, CreateFloorDto, CreateRoomDto } from './dto/create-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 @Injectable()
 export class RoomsService {
+  
   constructor(private readonly prisma: PrismaService) { }
   createRoom(createRoomDto: CreateRoomDto) {
     return this.prisma.rooms.create({
@@ -20,6 +21,7 @@ export class RoomsService {
       data: createFloorDto
     })
   }
+
   async getAllRooms() {
 
     const occupiedRooms = await this.prisma.rooms.findMany({
@@ -41,6 +43,7 @@ export class RoomsService {
       })
     console.log(updateRoomAvailability)
     }
+
     const rooms = await this.prisma.blocks.findMany({
       orderBy: [
         {

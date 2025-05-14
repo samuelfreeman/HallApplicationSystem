@@ -8,7 +8,7 @@ export class AdminService {
   constructor(
     private readonly prisma: PrismaService,
     private bcrypt: PasswordService,
-  ) {}
+  ) { }
 
   async create(createAdminDto: CreateAdminDto) {
     createAdminDto.password = await this.bcrypt.hashPassword(
@@ -43,5 +43,48 @@ export class AdminService {
     return this.prisma.admin.delete({
       where: { id },
     });
+  }
+  listAllStudents() {
+    return this.prisma.student.findMany({
+      include: {
+        allocation: {
+          include: {
+            rooms: {
+              include: {
+                floors: {
+                  include: {
+                    blocks: true
+                  }
+                }
+              }
+            }
+          }
+        },
+        Transaction: true,
+        hall: true
+      }
+    })
+  }
+  listAllAvailableRooms() {
+    return this.prisma.rooms.findMany({
+      where: {
+        status: "Available"
+      }
+    })
+  }
+  listAllBookedRooms() {
+    return this.prisma.rooms.findMany({
+      where: {
+        status: "Not_Available"
+      }
+    })
+  }
+  listAllTransactions() {
+    return this.prisma.transaction.findMany({
+      include: {
+        student: true,
+        allocation: true
+      }
+    })
   }
 }

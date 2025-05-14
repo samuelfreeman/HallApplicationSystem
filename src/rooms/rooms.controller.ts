@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { RoomsService } from './rooms.service';
 import { AssignRoomDto, CreateBlockDto, CreateFloorDto, CreateRoomDto } from './dto/create-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { AuthorizationGuard } from 'src/authorization/authorization.guard';
 @ApiTags("Room")
 @Controller('rooms')
 export class RoomsController {
@@ -31,6 +32,7 @@ export class RoomsController {
   }
 
   @Get()
+  @UseGuards(AuthorizationGuard)
   findAll() {
     return this.roomsService.getAllRooms();
   }

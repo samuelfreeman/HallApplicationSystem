@@ -25,35 +25,38 @@ model admin {
 }
 
 model student {
-  id              String      @id @default(uuid())
-  studentId       String      @unique
+  id              String        @id @default(uuid())
+  studentId       String        @unique
   profile         String?
   fullName        String
-  email           String?     @unique
+  email           String?       @unique
   password        String
   gender          String
   resetCode       String?
   resetCodeExpiry DateTime?
   level           Int
-  disabled        Boolean?    @default(false)
-  telephone       String      @unique
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime    @updatedAt
+  disabled        Boolean?      @default(false)
+  telephone       String        @unique
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
   department      String?
   allocation      allocation?
-  affilliate      String      @default("Autonomy")
-  hall            hall?       @relation(fields: [hallId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  affilliate      String        @default("Autonomy")
+  hall            hall?         @relation(fields: [hallId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   hallId          String?
+  Transaction     Transaction[]
+  chat            Chat[]
 }
 
 model allocation {
-  id        String   @id @default(uuid())
-  student   student  @relation(fields: [studentId], references: [studentId])
-  studentId String   @unique
-  rooms     rooms    @relation(fields: [roomId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  roomId    String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String        @id @default(uuid())
+  student     student       @relation(fields: [studentId], references: [studentId])
+  studentId   String        @unique
+  rooms       rooms         @relation(fields: [roomId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  roomId      String
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  Transaction Transaction[]
 }
 
 model floors {
@@ -87,6 +90,17 @@ model rooms {
   updatedAt       DateTime     @updatedAt
 }
 
+model Transaction {
+  id           String      @id @default(uuid())
+  amount       String
+  student      student?    @relation(fields: [studentId], references: [id])
+  studentId    String?
+  allocation   allocation? @relation(fields: [allocationId], references: [id])
+  allocationId String?
+  updatedAt    DateTime    @updatedAt
+  createdAt    DateTime    @default(now())
+}
+
 model contactUs {
   id                 String   @id @default(uuid())
   full_name          String
@@ -95,6 +109,18 @@ model contactUs {
   imgUrl             String?
   description        String
   createdAt          DateTime @default(now())
+}
+
+model Chat {
+  id        String   @id @default(uuid())
+  message   String
+  student   student? @relation(fields: [studentId], references: [studentId])
+  studentId String?
+  global    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([studentId])
 }
 
 model hall {
