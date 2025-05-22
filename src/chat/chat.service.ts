@@ -13,7 +13,17 @@ export class ChatService {
       const chat = await this.prisma.chat.create({
         data: createChatDto
       })
-      return chat;
+      const chatWithStudent  = await this.prisma.chat.findUnique({
+        where:{
+          id:chat.id
+        },
+        include:{
+          student:{select:{
+            fullName:true
+          }}
+        }
+      })
+      return chatWithStudent;
     } catch (error) {
       console.log(error)
       return error
@@ -28,7 +38,18 @@ export class ChatService {
           ...createChatDto
         }
       })
-      return chat;
+
+      const chatWithStudent = await this.prisma.chat.findUnique({
+        where:{
+          id:chat.id
+        },
+        include:{
+          student:{select:{
+            fullName:true
+          }}
+        }
+      })
+      return chatWithStudent;
     } catch (error) {
       console.log(error)
       return error
@@ -53,7 +74,7 @@ export class ChatService {
         }
 
       });
-      console.log(chat)
+      
       return chat
     } catch (error) {
       console.log(error);
@@ -76,7 +97,7 @@ export class ChatService {
         }
       })
       const studentsIds = students.allocation.map(allocation => allocation.studentId);
-      console.log(studentsIds)
+      
       const chats = await this.prisma.chat.findMany({
         where: {
           studentId: {

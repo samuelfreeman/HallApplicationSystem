@@ -30,6 +30,7 @@ export class ChatGateway {
   ) {
     const savedChat = await this.chatService.create(createChatDto);
     // Emit only to the sender
+    console.log(savedChat)
     this.server.emit('chatCreated', savedChat);
     return savedChat;
   }
@@ -39,6 +40,7 @@ export class ChatGateway {
   async globalCreateChat(@MessageBody() createChatDto: CreateChatDto) {
     const savedChat = await this.chatService.globalCreate(createChatDto);
     this.server.emit('globalChatCreated', savedChat);
+
     return savedChat;
   }
 
