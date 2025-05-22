@@ -26,12 +26,21 @@ import { PaystackController } from './paystack/paystack.controller';
 import { PaystackService } from './paystack/paystack.service';
 import { JwtModule } from '@nestjs/jwt';
 import { ChatModule } from './chat/chat.module';
+import { ThrottlerModule } from '@nestjs/throttler';
 
 
 
 
 @Module({
   imports: [
+    ThrottlerModule.forRoot({
+      throttlers: [
+        {
+          ttl: 900000,
+          limit: 20,
+        },
+      ],
+    }),
     JwtModule.register({
       global:true ,
       secret:process.env.JWT_SECRET,
